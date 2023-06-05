@@ -61,3 +61,9 @@ input {
   padding: 4px 8px;
   width: 13vw;
 }
+
+#githubLink {
+  position: absolute;
+  bottom: 4px;
+  left: 4px;
+}

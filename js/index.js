@@ -1,8 +1,8 @@
 const WORDS_PER_SYLLABLE = 500;
 
 // get wordlist and syllables from server
-const words = (await (await fetch('wordlist.txt')).text()).split('\r\n');
-const syllables = await (await fetch('syllables.json')).json();
+const words = (await (await fetch('assets/wordlist.txt')).text()).split('\r\n');
+const syllables = await (await fetch('assets/syllables.json')).json();
 let currentSyllables = [];
 
 for (const count in syllables) {
