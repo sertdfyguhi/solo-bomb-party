@@ -1,19 +1,15 @@
 let wordAmountPerSyllable = 500;
-
-let words, syllables;
 let currentSyllables = [];
 
 // get wordlist and syllables from server
-(async () => {
-  words = (await (await fetch('wordlist.txt')).text()).split('\r\n');
-  syllables = await (await fetch('syllables.json')).json();
+const words = (await (await fetch('wordlist.txt')).text()).split('\r\n');
+const syllables = await (await fetch('syllables.json')).json();
 
-  for (const count in syllables) {
-    if (count >= wordAmountPerSyllable) {
-      currentSyllables = currentSyllables.concat(syllables[count]);
-    }
+for (const count in syllables) {
+  if (count >= wordAmountPerSyllable) {
+    currentSyllables = currentSyllables.concat(syllables[count]);
   }
-})();
+}
 
 const startButton = document.getElementById('startButton');
 const inputWord = document.getElementById('inputWord');
