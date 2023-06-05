@@ -1,21 +1,31 @@
-const WORDS_PER_SYLLABLE = 500;
-
 // get wordlist and syllables from server
 const words = (await (await fetch('assets/wordlist.txt')).text()).split('\r\n');
 const syllables = await (await fetch('assets/syllables.json')).json();
 let currentSyllables = [];
 
-for (const count in syllables) {
-  if (count >= WORDS_PER_SYLLABLE) {
-    currentSyllables = currentSyllables.concat(syllables[count]);
+const wordsPerPrompt = document.getElementById('wordsPerPromptInput');
+let currentWordsPerPrompt = wordsPerPrompt.value || 500;
+
+function setCurrentSyllables(wordsPerPrompt) {
+  currentSyllables = [];
+
+  for (const count in syllables) {
+    if (count >= wordsPerPrompt) {
+      currentSyllables = currentSyllables.concat(syllables[count]);
+    }
   }
 }
 
+setCurrentSyllables(currentWordsPerPrompt);
+
+const settingsBackground = document.getElementById('settingsBackground');
+const settingsContainer = document.getElementById('settingsContainer');
 const startContainer = document.getElementById('startContainer');
 const gameContainer = document.getElementById('gameContainer');
+
 const startButton = document.getElementById('startButton');
-const inputWord = document.getElementById('inputWord');
 const wordPrompt = document.getElementById('wordPrompt');
+const inputWord = document.getElementById('inputWord');
 const gameTimeEl = document.getElementById('gameTime');
 
 const highscoresEl = document.getElementById('highscores');
@@ -132,4 +142,28 @@ inputWord.addEventListener('keypress', e => {
       nextPrompt();
     }
   }
+});
+
+// settings
+document.getElementById('settingsButton').addEventListener('click', () => {
+  settingsContainer.style.display = 'block';
+  settingsBackground.style.display = 'block';
+
+  settingsContainer.focus();
+});
+
+function exitSettings() {
+  settingsContainer.style.display = 'none';
+  settingsBackground.style.display = 'none';
+
+  if (currentWordsPerPrompt != wordsPerPrompt.value) {
+    console.log('settings: words per prompt', wordsPerPrompt.value);
+    currentWordsPerPrompt = parseInt(wordsPerPrompt.value);
+    setCurrentSyllables(currentWordsPerPrompt);
+  }
+}
+
+settingsBackground.addEventListener('click', exitSettings);
+settingsContainer.addEventListener('keydown', e => {
+  if (e.key == 'Escape') exitSettings();
 });

@@ -22,9 +22,10 @@
 
       <div id="startContainer">
         <button id="startButton">Start.</button>
-        <p id="finalScore"></p>
+        <button id="settingsButton">Settings.</button>
 
-        <h3 style="margin-bottom: 10px">Highscores:</h3>
+        <p id="finalScore"></p>
+        <h3 style="margin: 10px">Highscores:</h3>
         <ol id="highscores"></ol>
       </div>
 
@@ -39,6 +40,23 @@
         <p id="score" style="margin-bottom: 2px">Score: 0</p>
         <p id="gameTime" style="margin-top: 2px">0s</p>
       </div>
+    </div>
+
+    <div id="settingsBackground"></div>
+    <div id="settingsContainer" tabindex="0">
+      <h2>Settings</h2>
+
+      <section>
+        <h3>Dictionary</h3>
+
+        <label for="wordsPerPromptInput">Words Per Prompt</label>
+        <input
+          type="number"
+          id="wordsPerPromptInput"
+          placeholder="Words per prompt..."
+          value="500"
+        />
+      </section>
     </div>
 
     <a

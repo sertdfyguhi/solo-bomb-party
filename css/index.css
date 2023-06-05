@@ -16,7 +16,7 @@ body {
   align-items: center;
   justify-content: center;
 
-  height: 90vh;
+  height: 91vh;
 }
 
 h1 {
@@ -32,7 +32,21 @@ input {
   border-radius: 5px;
 }
 
+button {
+  font-size: 15px;
+  padding: 3px 15px;
+
+  transition: background-color 0.4s, color 0.4s;
+}
+
+button:hover {
+  background-color: #f0f0f0;
+  color: var(--bg-color);
+}
+
 input {
+  font-size: 13px;
+  padding: 4px 8px;
   outline: none;
 }
 
@@ -44,26 +58,61 @@ input {
   padding-left: 0%;
 }
 
-#startButton {
-  font-size: 15px;
-  padding: 3px 15px;
-
-  transition: background-color 0.4s, color 0.4s;
-}
-
-#startButton:hover {
-  background-color: #f0f0f0;
-  color: var(--bg-color);
-}
-
 #inputWord {
-  font-size: 13px;
-  padding: 4px 8px;
   width: 13vw;
 }
 
 #githubLink {
   position: absolute;
-  bottom: 4px;
-  left: 4px;
+  bottom: 2px;
+  left: 5px;
+}
+
+#settingsContainer {
+  display: none;
+  background-color: var(--bg-color);
+  border: 1px solid var(--fg-color);
+  border-radius: 8px;
+
+  padding: 12px 24px;
+  z-index: 2;
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#settingsContainer h2 {
+  margin-top: 0%;
+  margin-bottom: 0.5ch;
+}
+
+#settingsContainer h3 {
+  font-size: 20px;
+  text-align: left;
+  margin: 0%;
+  margin-bottom: 0.5ch;
+}
+
+#settingsContainer label {
+  font-size: 14px;
+  padding-right: 0.6ch;
+}
+
+#settingsContainer input {
+  font-size: 12px;
+}
+
+#settingsBackground {
+  position: absolute;
+  top: 0px;
+  left: 0px;
+
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+
+  display: none;
+  background-color: rgba(0, 0, 0, 0.4);
 }
