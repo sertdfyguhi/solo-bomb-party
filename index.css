@@ -1,0 +1,55 @@
+:root {
+  --bg-color: #292929;
+  --fg-color: #fff;
+  --font: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+
+  font-family: var(--font);
+  text-align: center;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  height: 90vh;
+}
+
+h1 {
+  font-size: 40px;
+}
+
+button,
+input {
+  background-color: var(--bg-color);
+  color: var(--fg-color);
+
+  border: 1px solid var(--fg-color);
+  border-radius: 5px;
+}
+
+input {
+  outline: none;
+}
+
+#startButton {
+  font-size: 15px;
+  padding: 3px 15px;
+
+  transition: background-color 0.4s, color 0.4s;
+}
+
+#startButton:hover {
+  background-color: #f0f0f0;
+  color: var(--bg-color);
+}
+
+#inputWord {
+  font-size: 13px;
+  padding: 4px 8px;
+  width: 13vw;
+}
