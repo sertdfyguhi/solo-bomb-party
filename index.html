@@ -4,19 +4,40 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="A singleplayer / solo version of jklm.fun's bomb party."
+    />
+    <meta
+      name="keywords"
+      content="bomb party, solo bomb party, singleplayer bomb party, bomb party solo, bomb party singleplayer"
+    />
+    <meta name="author" content="sertdfyguhi" />
     <title>Solo Bomb Party</title>
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
     <div>
       <h1 style="margin: 20px">Solo Bomb Party</h1>
-      <button id="startButton">Start.</button>
+
+      <div id="startContainer">
+        <button id="startButton">Start.</button>
+        <p id="finalScore"></p>
+
+        <h3 style="margin-bottom: 10px">Highscores:</h3>
+        <ol id="highscores"></ol>
+      </div>
 
       <div id="gameContainer" style="display: none">
         <h3 id="wordPrompt"></h3>
-        <p id="promptTime">0s</p>
-        <input type="text" id="inputWord" placeholder="Input word..." />
-        <p id="score">Score: 0</p>
+        <input
+          type="text"
+          id="inputWord"
+          placeholder="Input word..."
+          autocomplete="off"
+        />
+        <p id="score" style="margin-bottom: 2px">Score: 0</p>
+        <p id="gameTime" style="margin-top: 2px">0s</p>
       </div>
     </div>
 

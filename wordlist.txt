@@ -83077,7 +83077,6 @@ faff
 faffed
 faffing
 faffs
-fag
 fagaceous
 fagged
 faggeries
@@ -83086,14 +83085,6 @@ faggier
 faggiest
 fagging
 faggings
-faggot
-faggoted
-faggoting
-faggotings
-faggotries
-faggotry
-faggots
-faggoty
 faggy
 fagin
 fagins
@@ -153525,8 +153516,6 @@ nifty
 nigella
 nigellas
 niger
-nigers
-nigga
 niggard
 niggarded
 niggarding
@@ -153538,7 +153527,6 @@ niggardliness
 niggardlinesses
 niggardly
 niggards
-nigger
 niggerdom
 niggerdoms
 niggered
@@ -153550,8 +153538,6 @@ niggerism
 niggerisms
 niggerling
 niggerlings
-niggers
-niggery
 niggle
 niggled
 niggler
@@ -273277,3 +273263,4 @@ zyzzyvas
 zzz
 zzzs
 superhyperhydrophobic
+methylenedioxymethamphetamine

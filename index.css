@@ -36,6 +36,14 @@ input {
   outline: none;
 }
 
+#highscores {
+  display: inline-block;
+  list-style-position: inside;
+
+  margin: 0%;
+  padding-left: 0%;
+}
+
 #startButton {
   font-size: 15px;
   padding: 3px 15px;
