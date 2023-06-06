@@ -5,7 +5,19 @@
     Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
+@keyframes transparentToOpaque {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 100;
+  }
+}
+
 body {
+  animation: transparentToOpaque 0.7s ease-out;
+
   background-color: var(--bg-color);
   color: var(--fg-color);
 

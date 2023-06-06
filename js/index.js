@@ -1,51 +1,8 @@
-// get wordlist and syllables from server
-const words = (await (await fetch('assets/wordlist.txt')).text()).split('\r\n');
-const syllables = await (await fetch('assets/syllables.json')).json();
-let currentSyllables = [];
-
-const wordsPerPrompt = document.getElementById('wordsPerPromptInput');
-let currentWordsPerPrompt = wordsPerPrompt.value || 500;
-
-function setCurrentSyllables(wordsPerPrompt) {
-  currentSyllables = [];
-
-  for (const count in syllables) {
-    if (count >= wordsPerPrompt) {
-      currentSyllables = currentSyllables.concat(syllables[count]);
-    }
-  }
-}
-
-setCurrentSyllables(currentWordsPerPrompt);
-
-const settingsBackground = document.getElementById('settingsBackground');
-const settingsContainer = document.getElementById('settingsContainer');
-const startContainer = document.getElementById('startContainer');
-const gameContainer = document.getElementById('gameContainer');
-
-const startButton = document.getElementById('startButton');
-const wordPrompt = document.getElementById('wordPrompt');
-const inputWord = document.getElementById('inputWord');
-const gameTimeEl = document.getElementById('gameTime');
-
+// load highscores
 const highscoresEl = document.getElementById('highscores');
-const finalScoreEl = document.getElementById('finalScore');
-const scoreEl = document.getElementById('score');
-
-let promptTimeInterval;
-let gameTime = 60;
-let inputtedWords = [];
-
 let highscores = localStorage.getItem('highscores') || Array(5).fill(0);
 if (typeof highscores == 'string') highscores = highscores.split(';');
 loadHighscores();
-
-let score = 0;
-
-function updateScore(plus) {
-  plus ? score++ : score--;
-  scoreEl.innerText = `Score: ${score}`;
-}
 
 function loadHighscores() {
   // reset highscore element
@@ -62,6 +19,47 @@ function loadHighscores() {
   }
 }
 
+// get wordlist and syllables from server
+const words = (await (await fetch('assets/wordlist.txt')).text()).split('\r\n');
+const syllables = await (await fetch('assets/syllables.json')).json();
+
+const wordsPerPrompt = document.getElementById('wordsPerPromptInput');
+let currentWordsPerPrompt = wordsPerPrompt.value || 500;
+
+function findSyllables(wordsPerPrompt) {
+  let output = [];
+
+  for (const count of Object.keys(syllables).reverse()) {
+    if (parseInt(count) >= wordsPerPrompt) {
+      output = output.concat(syllables[count]);
+    } else {
+      break;
+    }
+  }
+
+  return output;
+}
+
+let currentSyllables = findSyllables(currentWordsPerPrompt);
+
+const settingsBackground = document.getElementById('settingsBackground');
+const settingsContainer = document.getElementById('settingsContainer');
+const startContainer = document.getElementById('startContainer');
+const gameContainer = document.getElementById('gameContainer');
+
+const startButton = document.getElementById('startButton');
+const wordPrompt = document.getElementById('wordPrompt');
+const inputWord = document.getElementById('inputWord');
+const gameTimeEl = document.getElementById('gameTime');
+
+const finalScoreEl = document.getElementById('finalScore');
+const scoreEl = document.getElementById('score');
+
+let promptTimeInterval;
+let gameTime = 60;
+let score = 0;
+let inputtedWords = [];
+
 function findHighscoreIndex(score) {
   for (const i in highscores) {
     if (highscores[i] < score) {
@@ -70,6 +68,11 @@ function findHighscoreIndex(score) {
   }
 
   return i;
+}
+
+function updateScore(plus) {
+  plus ? score++ : score--;
+  scoreEl.innerText = `Score: ${score}`;
 }
 
 function nextPrompt() {
@@ -159,7 +162,7 @@ function exitSettings() {
   if (currentWordsPerPrompt != wordsPerPrompt.value) {
     console.log('settings: words per prompt', wordsPerPrompt.value);
     currentWordsPerPrompt = parseInt(wordsPerPrompt.value);
-    setCurrentSyllables(currentWordsPerPrompt);
+    currentSyllables = findSyllables(currentWordsPerPrompt);
   }
 }
 
