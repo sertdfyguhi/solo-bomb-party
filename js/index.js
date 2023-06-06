@@ -23,24 +23,9 @@ function loadHighscores() {
 const words = (await (await fetch('assets/wordlist.txt')).text()).split('\r\n');
 const syllables = await (await fetch('assets/syllables.json')).json();
 
-const wordsPerPrompt = document.getElementById('wordsPerPromptInput');
-let currentWordsPerPrompt = parseInt(wordsPerPrompt.value) || 500;
-
-function findSyllables(wordsPerPrompt) {
-  let output = [];
-
-  for (const count of Object.keys(syllables).reverse()) {
-    if (parseInt(count) >= wordsPerPrompt) {
-      output = output.concat(syllables[count]);
-    } else {
-      break;
-    }
-  }
-
-  return output;
-}
-
-let currentSyllables = findSyllables(currentWordsPerPrompt);
+const wordsPerPromptInput = document.getElementById('wordsPerPromptInput');
+const promptTimeInput = document.getElementById('promptTimeInput');
+const gameTimeInput = document.getElementById('gameTimeInput');
 
 const settingsBackground = document.getElementById('settingsBackground');
 const settingsContainer = document.getElementById('settingsContainer');
@@ -56,7 +41,26 @@ const finalScoreEl = document.getElementById('finalScore');
 const scoreEl = document.getElementById('score');
 
 let promptTimeInterval;
+let promptTime = 8;
 let gameTime = 60;
+let wordsPerPrompt = parseInt(wordsPerPromptInput.value) || 500;
+
+function findSyllables(wordsPerPrompt) {
+  let output = [];
+
+  for (const count of Object.keys(syllables).reverse()) {
+    if (parseInt(count) >= wordsPerPrompt) {
+      output = output.concat(syllables[count]);
+    } else {
+      break;
+    }
+  }
+
+  return output;
+}
+
+let currentSyllables = findSyllables(wordsPerPrompt);
+
 let score = 0;
 let inputtedWords = [];
 
@@ -84,12 +88,12 @@ function nextPrompt() {
   wordPrompt.innerText = newSyllable;
   inputWord.value = '';
 
-  let promptTime = 0;
+  let currentPromptTime = 0;
 
   clearInterval(promptTimeInterval);
   promptTimeInterval = setInterval(() => {
     // 8 seconds
-    if (promptTime++ == 7) {
+    if (currentPromptTime++ == promptTime - 1) {
       nextPrompt();
       updateScore(false);
     }
@@ -124,12 +128,14 @@ function startGame() {
   inputWord.focus();
   gameTimeEl.innerText = `${gameTime}s`;
 
+  let currentGameTime = gameTime;
+
   let gameTimeInterval = setInterval(() => {
-    if (gameTime-- == 1) {
+    if (currentGameTime-- == 1) {
       endGame();
       clearInterval(gameTimeInterval);
     }
-    gameTimeEl.innerText = `${gameTime}s`;
+    gameTimeEl.innerText = `${currentGameTime}s`;
   }, 1000);
 }
 
@@ -162,10 +168,17 @@ function exitSettings() {
   settingsContainer.style.display = 'none';
   settingsBackground.style.display = 'none';
 
-  if (currentWordsPerPrompt != wordsPerPrompt.value) {
-    console.log('settings: words per prompt', wordsPerPrompt.value);
-    currentWordsPerPrompt = parseInt(wordsPerPrompt.value);
-    currentSyllables = findSyllables(currentWordsPerPrompt);
+  if (wordsPerPrompt != wordsPerPromptInput.value) {
+    wordsPerPrompt = parseInt(wordsPerPromptInput.value);
+    currentSyllables = findSyllables(wordsPerPrompt);
+  }
+
+  if (gameTime != gameTimeInput.value) {
+    gameTime = parseInt(gameTimeInput.value);
+  }
+
+  if (promptTime != promptTimeInput.value) {
+    promptTime = parseInt(promptTimeInput.value);
   }
 }
 

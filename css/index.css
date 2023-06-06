@@ -58,7 +58,7 @@ button:hover {
 
 input {
   font-size: 13px;
-  padding: 4px 8px;
+  padding: 4px 6px;
   outline: none;
 }
 
@@ -86,7 +86,10 @@ input {
   border: 1px solid var(--fg-color);
   border-radius: 8px;
 
+  text-align: left;
+
   padding: 12px 24px;
+  padding-right: 30px;
   z-index: 2;
 
   position: absolute;
@@ -96,15 +99,31 @@ input {
 }
 
 #settingsContainer h2 {
+  position: relative;
+  right: 0.2ch;
+
+  font-size: 30px;
   margin-top: 0%;
-  margin-bottom: 0.5ch;
+  margin-bottom: 0.4ch;
 }
 
 #settingsContainer h3 {
+  position: relative;
+  left: 0.2ch;
+
   font-size: 20px;
-  text-align: left;
   margin: 0%;
+  margin-bottom: 0.2ch;
+}
+
+#settingsContainer section {
   margin-bottom: 0.5ch;
+}
+
+#settingsContainer label,
+#settingsContainer input {
+  position: relative;
+  left: 1ch;
 }
 
 #settingsContainer label {
@@ -114,6 +133,7 @@ input {
 
 #settingsContainer input {
   font-size: 12px;
+  margin-bottom: 5px;
 }
 
 #settingsBackground {
