@@ -24,7 +24,7 @@ const words = (await (await fetch('assets/wordlist.txt')).text()).split('\r\n');
 const syllables = await (await fetch('assets/syllables.json')).json();
 
 const wordsPerPrompt = document.getElementById('wordsPerPromptInput');
-let currentWordsPerPrompt = wordsPerPrompt.value || 500;
+let currentWordsPerPrompt = parseInt(wordsPerPrompt.value) || 500;
 
 function findSyllables(wordsPerPrompt) {
   let output = [];
@@ -107,8 +107,11 @@ function endGame() {
   }
 
   finalScoreEl.innerText = `Final Score: ${score}`;
+
   score = 0;
   gameTime = 60;
+  inputtedWords = [];
+
   gameContainer.style.display = 'none';
   startContainer.style.display = 'block';
 }
