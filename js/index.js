@@ -89,9 +89,9 @@ function nextPrompt() {
   wordPrompt.innerText = newSyllable;
   inputWord.value = '';
 
-  if (infiniteModeInput.value == 'on') return;
+  if (infiniteModeInput.checked) return;
 
-  let currentPromptTime = promptTIme;
+  let currentPromptTime = promptTime;
 
   clearInterval(promptTimeInterval);
   promptTimeInterval = setInterval(() => {
@@ -129,12 +129,13 @@ function startGame() {
 
   nextPrompt();
   inputWord.focus();
-  gameTimeEl.innerText = `${gameTime}s`;
 
-  if (infiniteModeInput.value == 'on') {
+  if (infiniteModeInput.checked) {
     gameTimeEl.innerText = 'Infinite mode';
     return;
   }
+
+  gameTimeEl.innerText = `${gameTime}s`;
 
   let currentGameTime = gameTime;
 
