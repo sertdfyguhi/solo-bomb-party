@@ -24,6 +24,7 @@ const words = (await (await fetch('assets/wordlist.txt')).text()).split('\r\n');
 const syllables = await (await fetch('assets/syllables.json')).json();
 
 const wordsPerPromptInput = document.getElementById('wordsPerPromptInput');
+const infiniteModeInput = document.getElementById('infiniteModeInput');
 const promptTimeInput = document.getElementById('promptTimeInput');
 const gameTimeInput = document.getElementById('gameTimeInput');
 
@@ -88,12 +89,14 @@ function nextPrompt() {
   wordPrompt.innerText = newSyllable;
   inputWord.value = '';
 
-  let currentPromptTime = 0;
+  if (infiniteModeInput.value == 'on') return;
+
+  let currentPromptTime = promptTIme;
 
   clearInterval(promptTimeInterval);
   promptTimeInterval = setInterval(() => {
     // 8 seconds
-    if (currentPromptTime++ == promptTime - 1) {
+    if (currentPromptTime-- == 1) {
       nextPrompt();
       updateScore(false);
     }
@@ -127,6 +130,11 @@ function startGame() {
   nextPrompt();
   inputWord.focus();
   gameTimeEl.innerText = `${gameTime}s`;
+
+  if (infiniteModeInput.value == 'on') {
+    gameTimeEl.innerText = 'Infinite mode';
+    return;
+  }
 
   let currentGameTime = gameTime;
 
