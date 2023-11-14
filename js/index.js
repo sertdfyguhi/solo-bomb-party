@@ -1,18 +1,18 @@
 // load highscores
-const highscoresEl = document.getElementById('highscores');
-let highscores = localStorage.getItem('highscores') || Array(5).fill(0);
-if (typeof highscores == 'string') highscores = highscores.split(';');
+const highscoresEl = document.getElementById("highscores");
+let highscores = localStorage.getItem("highscores") || Array(5).fill(0);
+if (typeof highscores == "string") highscores = highscores.split(";");
 loadHighscores();
 
 function loadHighscores() {
   // reset highscore element
-  highscoresEl.innerHTML = '';
+  highscoresEl.innerHTML = "";
 
   // store highscores into localStorage
-  localStorage.setItem('highscores', highscores.join(';'));
+  localStorage.setItem("highscores", highscores.join(";"));
 
   for (const highscore of highscores) {
-    const listItem = document.createElement('li');
+    const listItem = document.createElement("li");
     listItem.innerText = highscore;
 
     highscoresEl.appendChild(listItem);
@@ -20,26 +20,24 @@ function loadHighscores() {
 }
 
 // get wordlist and syllables from server
-const words = (await (await fetch('assets/wordlist.txt')).text()).split('\r\n');
-const syllables = await (await fetch('assets/syllables.json')).json();
+const words = (await (await fetch("assets/wordlist.txt")).text()).split("\r\n");
+const syllables = await (await fetch("assets/syllables.json")).json();
 
-const wordsPerPromptInput = document.getElementById('wordsPerPromptInput');
-const infiniteModeInput = document.getElementById('infiniteModeInput');
-const promptTimeInput = document.getElementById('promptTimeInput');
-const gameTimeInput = document.getElementById('gameTimeInput');
+const wordsPerPromptInput = document.getElementById("wordsPerPromptInput");
+const infiniteModeInput = document.getElementById("infiniteModeInput");
+const promptTimeInput = document.getElementById("promptTimeInput");
+const gameTimeInput = document.getElementById("gameTimeInput");
 
-const settingsBackground = document.getElementById('settingsBackground');
-const settingsContainer = document.getElementById('settingsContainer');
-const startContainer = document.getElementById('startContainer');
-const gameContainer = document.getElementById('gameContainer');
+const startContainer = document.getElementById("startContainer");
+const gameContainer = document.getElementById("gameContainer");
 
-const startButton = document.getElementById('startButton');
-const wordPrompt = document.getElementById('wordPrompt');
-const inputWord = document.getElementById('inputWord');
-const gameTimeEl = document.getElementById('gameTime');
+const startButton = document.getElementById("startButton");
+const wordPrompt = document.getElementById("wordPrompt");
+const inputWord = document.getElementById("inputWord");
+const gameTimeEl = document.getElementById("gameTime");
 
-const finalScoreEl = document.getElementById('finalScore');
-const scoreEl = document.getElementById('score');
+const finalScoreEl = document.getElementById("finalScore");
+const scoreEl = document.getElementById("score");
 
 let promptTimeInterval;
 let promptTime = 8;
@@ -62,17 +60,13 @@ function findSyllables(wordsPerPrompt) {
 
 let currentSyllables = findSyllables(wordsPerPrompt);
 
-let score = 0;
 let inputtedWords = [];
+let inGame = false;
+let score = 0;
 
 function findHighscoreIndex(score) {
-  for (const i in highscores) {
-    if (highscores[i] < score) {
-      return i;
-    }
-  }
-
-  return i;
+  const index = highscores.findIndex(highscore => highscore < score);
+  return index < 0 ? highscores.length - 1 : index;
 }
 
 function updateScore(plus) {
@@ -84,10 +78,10 @@ function nextPrompt() {
   const newSyllable =
     currentSyllables[Math.round(Math.random() * (currentSyllables.length - 1))];
 
-  console.log(newSyllable);
+  console.log("current syllable:", newSyllable);
 
   wordPrompt.innerText = newSyllable;
-  inputWord.value = '';
+  inputWord.value = "";
 
   if (infiniteModeInput.checked) return;
 
@@ -105,6 +99,7 @@ function nextPrompt() {
 
 function endGame() {
   clearInterval(promptTimeInterval);
+  inGame = false;
 
   if (score > highscores[highscores.length - 1]) {
     highscores.splice(findHighscoreIndex(score), 0, score);
@@ -119,19 +114,21 @@ function endGame() {
   gameTime = 60;
   inputtedWords = [];
 
-  gameContainer.style.display = 'none';
-  startContainer.style.display = 'block';
+  gameContainer.style.display = "none";
+  startContainer.style.display = "block";
 }
 
 function startGame() {
-  startContainer.style.display = 'none';
-  gameContainer.style.display = 'block';
+  inGame = true;
+
+  startContainer.style.display = "none";
+  gameContainer.style.display = "block";
 
   nextPrompt();
   inputWord.focus();
 
   if (infiniteModeInput.checked) {
-    gameTimeEl.innerText = 'Infinite mode';
+    gameTimeEl.innerText = "Infinite mode";
     return;
   }
 
@@ -148,34 +145,50 @@ function startGame() {
   }, 1000);
 }
 
-startButton.addEventListener('click', startGame);
-inputWord.addEventListener('keypress', e => {
-  if (e.key == 'Enter') {
-    const word = inputWord.value.toLowerCase();
+startButton.addEventListener("click", startGame);
+document.getElementById("skipButton").addEventListener("click", nextPrompt);
 
-    if (
-      !inputtedWords.includes(word) &&
-      word.includes(wordPrompt.innerText) &&
-      words.includes(word)
-    ) {
-      updateScore(true);
-      inputtedWords.push(word);
+// keyboard shortcuts
+inputWord.addEventListener("keypress", e => {
+  if (e.code == "Enter") {
+    if (e.shiftKey) {
       nextPrompt();
+    } else {
+      const word = inputWord.value.toLowerCase();
+
+      if (
+        !inputtedWords.includes(word) &&
+        word.includes(wordPrompt.innerText) &&
+        words.includes(word)
+      ) {
+        updateScore(true);
+        inputtedWords.push(word);
+        nextPrompt();
+      }
     }
   }
 });
 
+document.addEventListener("keypress", e => {
+  if (e.code == "Space" && !inGame) {
+    startGame();
+  }
+});
+
 // settings
-document.getElementById('settingsButton').addEventListener('click', () => {
-  settingsContainer.style.display = 'block';
-  settingsBackground.style.display = 'block';
+const settingsBackground = document.getElementById("settingsBackground");
+const settingsContainer = document.getElementById("settingsContainer");
+
+document.getElementById("settingsButton").addEventListener("click", () => {
+  settingsContainer.style.display = "block";
+  settingsBackground.style.display = "block";
 
   settingsContainer.focus();
 });
 
 function exitSettings() {
-  settingsContainer.style.display = 'none';
-  settingsBackground.style.display = 'none';
+  settingsContainer.style.display = "none";
+  settingsBackground.style.display = "none";
 
   if (wordsPerPrompt != wordsPerPromptInput.value) {
     wordsPerPrompt = parseInt(wordsPerPromptInput.value);
@@ -191,7 +204,7 @@ function exitSettings() {
   }
 }
 
-settingsBackground.addEventListener('click', exitSettings);
-settingsContainer.addEventListener('keydown', e => {
-  if (e.key == 'Escape') exitSettings();
+settingsBackground.addEventListener("click", exitSettings);
+settingsContainer.addEventListener("keydown", e => {
+  if (e.key == "Escape") exitSettings();
 });
