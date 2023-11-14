@@ -170,9 +170,7 @@ inputWord.addEventListener("keypress", e => {
 });
 
 document.addEventListener("keypress", e => {
-  if (e.code == "Space" && !inGame) {
-    startGame();
-  }
+  if (e.code == "Space" && !inGame) startGame();
 });
 
 // settings
@@ -195,13 +193,8 @@ function exitSettings() {
     currentSyllables = findSyllables(wordsPerPrompt);
   }
 
-  if (gameTime != gameTimeInput.value) {
-    gameTime = parseInt(gameTimeInput.value);
-  }
-
-  if (promptTime != promptTimeInput.value) {
-    promptTime = parseInt(promptTimeInput.value);
-  }
+  gameTime = gameTimeInput.value;
+  promptTime = promptTimeInput.value;
 }
 
 settingsBackground.addEventListener("click", exitSettings);
