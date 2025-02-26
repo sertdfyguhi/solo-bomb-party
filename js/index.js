@@ -2,7 +2,6 @@
 const highscoresEl = document.getElementById("highscores");
 let highscores = localStorage.getItem("highscores") || Array(5).fill(0);
 if (typeof highscores == "string") highscores = highscores.split(";");
-loadHighscores();
 
 function loadHighscores() {
   // reset highscore element
@@ -19,23 +18,29 @@ function loadHighscores() {
   }
 }
 
+loadHighscores();
+
 // get wordlist and syllables from server
 const words = (await (await fetch("assets/wordlist.txt")).text()).split("\r\n");
 const syllables = await (await fetch("assets/syllables.json")).json();
 
+// settings elements
 const wordsPerPromptInput = document.getElementById("wordsPerPromptInput");
 const infiniteModeInput = document.getElementById("infiniteModeInput");
 const promptTimeInput = document.getElementById("promptTimeInput");
 const gameTimeInput = document.getElementById("gameTimeInput");
 
+// containers
 const startContainer = document.getElementById("startContainer");
 const gameContainer = document.getElementById("gameContainer");
 
+// game related elements
 const startButton = document.getElementById("startButton");
 const wordPrompt = document.getElementById("wordPrompt");
 const inputWord = document.getElementById("inputWord");
 const gameTimeEl = document.getElementById("gameTime");
 
+// score elements
 const finalScoreEl = document.getElementById("finalScore");
 const scoreEl = document.getElementById("score");
 
@@ -70,8 +75,7 @@ function findHighscoreIndex(score) {
 }
 
 function updateScore(plus) {
-  plus ? score++ : score--;
-  scoreEl.innerText = `Score: ${score}`;
+  scoreEl.innerText = `Score: ${plus ? score++ : score--}`;
 }
 
 function nextPrompt() {
@@ -129,20 +133,18 @@ function startGame() {
 
   if (infiniteModeInput.checked) {
     gameTimeEl.innerText = "Infinite mode";
-    return;
+  } else {
+    gameTimeEl.innerText = `${gameTime}s`;
+
+    let currentGameTime = gameTime;
+    let gameTimeInterval = setInterval(() => {
+      if (currentGameTime-- == 1) {
+        endGame();
+        clearInterval(gameTimeInterval);
+      }
+      gameTimeEl.innerText = `${currentGameTime}s`;
+    }, 1000);
   }
-
-  gameTimeEl.innerText = `${gameTime}s`;
-
-  let currentGameTime = gameTime;
-
-  let gameTimeInterval = setInterval(() => {
-    if (currentGameTime-- == 1) {
-      endGame();
-      clearInterval(gameTimeInterval);
-    }
-    gameTimeEl.innerText = `${currentGameTime}s`;
-  }, 1000);
 }
 
 startButton.addEventListener("click", startGame);
